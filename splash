@@ -1,0 +1,162 @@
+var currentScene = 0;
+
+var drawBitmoji = function(bitmojiX,bitmojiY,w) {
+    noStroke();
+    var Size = w;
+    var bitmojiW = (Size/100);
+    
+    fill(94, 53, 33);
+    rect(bitmojiX-bitmojiW*23,bitmojiY+bitmojiW*17,bitmojiW*45,bitmojiW*52);
+    rect(bitmojiX-bitmojiW*28,bitmojiY+bitmojiW*36.4,bitmojiW*55,bitmojiW*33,9);
+    fill(198,136,99);
+    ellipse(bitmojiX-bitmojiW,bitmojiY+bitmojiW,bitmojiW*48,bitmojiW*63); //Head 
+    fill(255);
+    arc(bitmojiX-(bitmojiW*23),bitmojiY+(bitmojiW*25),bitmojiW*18,bitmojiW*25,-97,104);//Left Chisel
+    arc(bitmojiX-(bitmojiW*-23),bitmojiY+bitmojiW*25,bitmojiW*18,bitmojiW*27,67, 270);//Right Chisel 
+    fill(227, 227, 227);
+    ellipse(bitmojiX+bitmojiW*-9,bitmojiY+bitmojiW*3,bitmojiW*10,bitmojiW*13);//Left Eye White
+    ellipse(bitmojiX+bitmojiW*9,bitmojiY+bitmojiW*3,bitmojiW*10,bitmojiW*13);//Right Eye White
+    fill(0, 0, 0);
+    ellipse(bitmojiX+bitmojiW*-8,bitmojiY+bitmojiW*5,bitmojiW*4,bitmojiW*5); //left eye ball
+    ellipse(bitmojiX+bitmojiW*10,bitmojiY+bitmojiW*5,bitmojiW*4,bitmojiW*5); //right eye ball
+    
+    quad(bitmojiX+bitmojiW*-32,bitmojiY+bitmojiW*2,bitmojiX+bitmojiW*-17,bitmojiY+bitmojiW*-24,bitmojiX+bitmojiW*13,bitmojiY+bitmojiW*-26,bitmojiX+bitmojiW*-11,bitmojiY+bitmojiW*-5);//Left Hair Piece
+    quad(bitmojiX+bitmojiW*32,bitmojiY+bitmojiW*2,bitmojiX+bitmojiW*17,bitmojiY+bitmojiW*-24,bitmojiX+bitmojiW*-13,bitmojiY+bitmojiW*-26,bitmojiX+bitmojiW*12,bitmojiY+bitmojiW*-5);//Right Hair Piece
+    arc(bitmojiX+bitmojiW*0,bitmojiY+bitmojiW*-21, bitmojiW*36, bitmojiW*22,-180,0);
+    fill(247, 187, 161);
+    arc(bitmojiX+bitmojiW*0,bitmojiY+bitmojiW*16, bitmojiW*13, bitmojiW*7,0, 180);//Lips
+    fill(0,0,0);
+    quad(bitmojiX+bitmojiW*9,bitmojiY+bitmojiW*14,bitmojiX+bitmojiW*17,bitmojiY+bitmojiW*19,bitmojiX+bitmojiW*-9,bitmojiY+bitmojiW*14,bitmojiX+bitmojiW*-17,bitmojiY+bitmojiW*19);
+    fill(255);
+    text("DQ",bitmojiX+bitmojiW*9,bitmojiY+bitmojiW*45,bitmojiW*9,bitmojiW*30);
+};//David Bitmoji
+
+var drawMoji = function(mojiX,mojiY,h){
+        var drawCabeza = function(mojiX,mojiY,h){
+        noStroke();
+        fill(245, 200, 168); //skintone
+        ellipse(mojiX,mojiY+(h/100*3),h/100*68,h/100*90); //cabeza
+
+        fill(255, 255, 255);
+        //arc(60,142,28,55,0,361); //cheakbones
+        //arc(140,142,28,55,0,361);
+
+        fill(48, 39, 35);
+        quad(mojiX-(h/100*48),mojiY+(h/100*47),mojiX-(h/100*41),mojiY-(h/100*32),mojiX-(h/100*1),mojiY-(h/100*45),mojiX-(h/100*26),mojiY-(h/100*2)); //hair
+        quad(mojiX+(h/100*48),mojiY+(h/100*47),mojiX+(h/100*37),mojiY-(h/100*32),mojiX-(h/100*1),mojiY-(h/100*45),mojiX+(h/100*25),mojiY-(h/100*3));
+        triangle(mojiX-(h/100*31),mojiY-(h/100*21),mojiX+(h/100*25),mojiY-(h/100*21),mojiX-(h/100*1),mojiY-(h/100*45));
+        //ellipse(98,68,77,27);
+        fill(245, 200, 168); //forehead 
+        //quad(70,95,128,94,108,71,84,71);
+
+        stroke(0, 0, 0);
+        fill(51, 38, 16);
+        ellipse(mojiX-(h/100*13),mojiY,(h/100)*8,(h/100)*6); //eyes
+        ellipse(mojiX+(h/100*13),mojiY,(h/100)*8,(h/100)*6);
+
+        fill(245, 200, 168);
+        bezier(mojiX-(h/100*1),mojiY+(h/100*2),mojiX+(h/100*14),mojiY+(h/100*27),mojiX-(h/100*6),mojiY+(h/100*19),mojiX-(h/100*3),mojiY+(h/100*17)); //nose
+
+        fill(255, 255, 255);
+        arc(mojiX+1*(h/100),mojiY+24*(h/100),23*(h/100),13*(h/100),0,180); //mouth
+        line(mojiX-(h/100*10),mojiY+(h/100*24),mojiX+(h/100*11),mojiY+(h/100*24));
+        };
+        var drawShirt = function(mojiX,mojiY,h){
+        noStroke();
+        fill(202, 172, 232);
+        quad(mojiX,mojiY+(h/100*48),mojiX,mojiY+(h/100*90),mojiX-(h/100*42),mojiY+(h/100*90),mojiX-(h/100*23),mojiY+(h/100*45)); //shirt
+        quad(mojiX,mojiY+(h/100*48),mojiX,mojiY+(h/100*90),mojiX+(h/100*42),mojiY+(h/100*90),mojiX+(h/100*23),mojiY+(h/100*45));
+
+        stroke(0, 0, 0);
+        line(mojiX-(h/100*13),mojiY+(h/100*77),mojiX-(h/100*13),mojiY+(h/100*60)); // G back
+        line(mojiX-(h/100*4),mojiY+(h/100*77),mojiX-(h/100*13),mojiY+(h/100*77)); //bottom of G
+        line(mojiX-(h/100*4),mojiY+(h/100*60),mojiX-(h/100*13),mojiY+(h/100*60)); //top of G
+        line(mojiX-(h/100*4),mojiY+(h/100*77),mojiX-(h/100*4),mojiY+(h/100*69)); // G up
+        line(mojiX-(h/100*5),mojiY+(h/100*69),mojiX-(h/100*7),mojiY+(h/100*69));//G sideways in
+        line(mojiX+(h/100*8),mojiY+(h/100*77),mojiX+(h/100*8),mojiY+(h/100*61)); //C back
+        line(mojiX+(h/100*18),mojiY+(h/100*60),mojiX+(h/100*8),mojiY+(h/100*60)); //top of C
+        line(mojiX+(h/100*18),mojiY+(h/100*77),mojiX+(h/100*8),mojiY+(h/100*77)); //bottom of C
+        };
+        drawCabeza(mojiX,mojiY,h);
+        drawShirt(mojiX,mojiY,h);
+};//Gio Bitmoji
+
+
+var Button = function(config) {
+    this.x = config.x || 0;
+    this.y = config.y || 0;
+    this.width = config.width || 150;
+    this.height = config.height || 50;
+    this.label = config.label || "Click";
+    this.onClick = config.onClick || function() {};
+    this.color = config.color;
+   
+};
+ 
+Button.prototype.draw = function() {
+    fill(this.color);
+    rect(this.x, this.y, this.width, this.height, 5);
+    fill(0, 0, 0);
+    textSize(19);
+    textAlign(LEFT, TOP);
+    text(this.label, this.x+10, this.y+this.height/4);
+};
+
+Button.prototype.isMouseInside = function() {
+    return mouseX > this.x &&
+           mouseX < (this.x + this.width) &&
+           mouseY > this.y &&
+           mouseY < (this.y + this.height);
+};
+
+Button.prototype.handleMouseClick = function() {
+    if (this.isMouseInside()) {
+        this.onClick();
+    }
+};
+
+var startBtn = new Button({
+    x: 124,
+    y: 227,
+    color: color(255, 0, 0),
+    label: "        Start",
+    onClick: function() {
+            currentScene = 1;
+    }
+});//Start button
+
+
+
+var splash = function(){
+    background(154, 228, 252);
+    fill(0, 0, 0);
+    textSize(50);
+    text("Platformer Game", 10,103);
+    textSize(19);
+    text("",122,166);
+    startBtn.draw();   
+    drawBitmoji(331,349,75);
+    drawMoji(54,355,50);
+};//first scene that leads to game
+
+var scene1 = function(){
+    background(194, 198, 255);
+};//game scene
+
+mouseClicked = function() {
+    if(currentScene === 0){
+         startBtn.handleMouseClick();
+    }
+    
+};
+
+draw = function() {
+    if(currentScene === 0){
+        splash();
+    }
+    else{
+        scene1();
+    }
+};
+
+

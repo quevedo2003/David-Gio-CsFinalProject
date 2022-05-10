@@ -163,11 +163,30 @@ var startBtn = new Button({
     }
 });//Start button
 
+var goBtn = new Button({
+    x: 128,
+    y: 339,
+    color: color(250, 37, 37),
+    label: "  Let's Go!",
+    onClick: function() {
+            currentScene = 2;
+    }
+});// instruction scene button
+
+var Fruit = function(x,y){
+    this.x = x;
+    this.y = y;
+};
+
+Fruit.prototype.draw = function() {
+    image(getImage("cute/GemOrange"),this.x,this.y,40,40);
+};//fruit for player to collect
 
 var Char = function(x, y) {
     this.x = x;
     this.y = y;
 }; //make Char objects from this class, expandable
+
 
 Char.prototype.draw = function() {
     this.y = constrain(this.y, 0, height-50);
@@ -225,7 +244,17 @@ var splash = function(){
     drawMoji(54,355,50);
 };//first scene that leads to game
 
-var scene1 = function(){
+var intro = function(){
+    background(92, 163, 255);
+    fill(0, 0, 0);
+    textSize(36);
+    text("Story",152,8);
+    text("Controls",123,222);
+    goBtn.draw();
+    
+};//instruction and story; needs more text
+
+var game1 = function(){
     stroke(0, 0, 0);
     background(102, 116, 247);
 
@@ -285,8 +314,7 @@ var scene1 = function(){
     
 };//first game scene
 
- 
-var scene2 = function(){
+var game2 = function(){
     var scene = 2;
     background(77, 88, 186);
     //
@@ -323,10 +351,11 @@ draw = function() {
         splash();
     }
     else if(currentScene === 1){
-        scene1();
+        intro();
     }
     else if(currentScene === 2){
-        scene2();
+        game1();
     }
 };
+
 

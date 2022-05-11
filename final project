@@ -1,5 +1,6 @@
 
-var currentScene = 0;
+
+var currentScene = 4;
 var health = 15;
 var start = null;
 var m = createFont("monospace");
@@ -195,28 +196,33 @@ var Char = function(x, y) {
     this.x = x;
     this.y = y;
     this.speed = 5;
-}; //make Char objects from this class, expandable
+    this.speed_X = 5;
+    this.Onbuilding = true;
+    this.fall = false;
+    this.HeightLimit = 0;
+}; //make Char mainects from this class, expandable
 
 Char.prototype.draw = function() {
-    this.y = constrain(this.y, 0, height-50);
     drawCharacter( this.x, this.y,40);
     };//draws charcater
 
 Char.prototype.hop = function() {
-    this.y -= this.speed; // makes character go up
+    if(this.y > this.HeightLimit){
+     this.y -= 10; // makes character go down
+     this.fall = false;
+    }else{ this.fall = true;}
 };
 
 Char.prototype.fall = function() {
-    this.y += 5;
-    var temp = round(frameCount/60)-start; 
+    this.y += this.speed; 
 };
 
 Char.prototype.run = function(){
-    this.x += this.speed * 2.5;
+    this.x += this.speed_X * 2/5;
 };
 
 Char.prototype.back = function(){
-    this.x -= this.speed * 2.5;
+    this.x -= this.speed_X * 2/5;
 };
 
 Char.prototype.checkForFruit = function(fruit) {
@@ -271,20 +277,63 @@ var building = function(x,y, width, height){
     
 };
 
+var building = function(x,y, width, height){
+    //Building to the left
+    this.x = x;
+    this.y = y;
+    this.w = width;
+    this.h = height;
+    
+};
+
 building.prototype.draw = function(){
     fill(166, 166, 166); //0,179,94,220
-    rect(0,179,94,220);
-    if(main.y < this.y && main.x < this.x + this.w + 20 && main.x + 90 > this.x){
+    rect(this.x,this.y,this.w,this.h);
+    
+};
+
+building.prototype.checkCharacterPosition = function(){
+    
+    if(main.y < this.y - 20 && main.x < this.x + this.w + 20 && main.x > this.x && main.y > this.y - 30){
+        
         main.y -= main.speed;
-    }
-    else{
-        main.y += main.speed;
+        main.HeightLimit = this.y - 130;
+        main.fall = false;
     }
 };
 
-var building1 = new building(0,179,94,220);
+var buildings = [];
+buildings[0] = new building(0,179,94,220);
+buildings[1] = new building(200,217,58,220);
+buildings[2] = new building(324,217,98,290);
+buildings[3] = new building(192,183,47,11);
+buildings[4] = new building(275,222,15,15);
+buildings[5] = new building(298,183,15,15);
+buildings[6] = new building(78,388,245,11);
+building[7] = new building(0,179,94,236);
+building[8] = new building(200,222,33,92);
+building[9] = new building(355,151,76,252);
+building[10] = new building(125,258,43,40);
+building[11] = new building(277,203,43,40);
 
 
+function movement(){
+    if(!main.fall){
+        if (keyIsPressed && keyCode === UP) {
+             main.hop();
+        }
+        else{ main.speed = 5; }
+        
+    }
+    if (keyIsPressed && keyCode === RIGHT) {
+        main.run();
+        
+    }
+    if (keyIsPressed && keyCode === LEFT) {
+        main.back();
+        
+    }
+}
 
 var boss1 = new Enemy(135,203);//bosses for end scene
 var boss2 = new Enemy(287,149);
@@ -330,48 +379,63 @@ var intro = function(){
     text("To move forward: press the Right Arrow",10,294);
     goBtn.draw();
     
-};//instruction and story; needs more text
+};//instruction and story
 
 var game1 = function(){
     stroke(0, 0, 0);
-    background(115, 129, 255);
-
-    fill(166, 166, 166);
-    building1.draw();//first building
+    background(102, 116, 247);
+    
+    function decoration(){
+        //Sidewalk
     rect(95,389,103,10);
-    rect(200,217,58,220);
-    rect(325,217,98,290);
     rect(259,389,65,10);
-    
-    
 
+    //Windows to the left
     fill(247, 214, 30);
-    rect(10,212,20,20);
-    rect(60,212,20,20);
-    rect(10,252,20,20);
-    rect(60,252,20,20);
-    rect(10,212,20,20);
-    rect(10,291,20,20); 
-    rect(60,291,20,20);
-    rect(218,240,20,20);
+    rect(58,212,20,20);
+    rect(11,252,20,20);
+    rect(61,252,20,20);
+    rect(11,212,20,20);
+    rect(11,291,20,20); 
+    rect(61,291,20,20);
+    //
+    
+    //Middle Windows
+    rect(219,240,20,20);
     rect(218,281,20,20);
     rect(218,323,20,20);
+    //
+    //Windows to the right
     rect(340,234,20,20);
     rect(340,275,20,20);
     rect(340,320,20,20);
-
-    ellipse(110,17,10,10);
+    
+    
+    //Stars
+    ellipse(107,17,10,10);
     ellipse(77,54,10,10);
     ellipse(213,17,10,10);
     ellipse(179,85,10,10);
     ellipse(29,17,10,10);
     ellipse(253,65,10,10);
     ellipse(326,13,10,10);
+    //
+    }
+    for(var i = 0; i < buildings.length; i++){
+        buildings[i].draw();
+        buildings[i].checkCharacterPosition();
+    }
+    
+    decoration();
+    
+    //Moon
     fill(210, 222, 98);
     ellipse(360,52,40,41);
     
     main.draw(20,200);
+    movement();
     
+    main.y += main.speed;
     
     for (var i = 0; i < enemies.length; i++) {
         
@@ -387,20 +451,6 @@ var game1 = function(){
         main.checkForFruit(fruits[j]);
     }
     
-     if (keyIsPressed && keyCode === UP) {
-        main.hop();
-    } else { 
-       main.fall();
-    } //if space bar is pressed char jumps, else it continuosly falls
-        
-        
-    if (keyIsPressed && keyCode === RIGHT) {
-        main.run();
-    }
-    if (keyIsPressed && keyCode === LEFT) {
-        main.back();
-    }
-    
     
     if (main.y >= 300){
         fill(97, 0, 0);
@@ -409,7 +459,6 @@ var game1 = function(){
     }//when character falls to ground
     
     if (main.x >= 400){
-        //currentScene = 2;
         main.x = 0;
         currentScene = 3;
         //starts next scene
@@ -425,19 +474,42 @@ var game1 = function(){
     
 };//first game scene
 
+
+if(currentScene === 2){
+    buildings[0] = new building(-4,188,83,215);
+    buildings[1] = new building(325,222,86,183);
+    //platforms
+    buildings[2] = new building(100,147,58,11);
+    
+}
+
+if(currentScene === 3){
+    buildings[3] = new building(192,183,47,11);
+    buildings[4] = new building(275,222,15,15);
+    buildings[5] = new building(298,183,15,15);
+    buildings[6] = new building(78,388,245,11);
+}
+
+if(currentScene === 4){
+    building[7] = new building(0,179,94,236);
+    building[8] = new building(200,222,33,92);
+    building[9] = new building(355,151,76,252);
+    building[10] = new building(125,258,43,40);
+    building[11] = new building(277,203,43,40);
+}
+
 var game2 = function(){
     //scene 3
-    background(76, 95, 219);
+    
     stroke(0, 0, 0);
-    fill(166, 166, 166);
-    rect(-4,188,83,215);
-    rect(192,183,47,11);
-    rect(102,147,58,11);
-    rect(278,222,15,15);
-    rect(303,183,15,15);
-    rect(325,222,86,183);
-    rect(81,388,245,11);
-    //
+    fill(222, 179, 100);
+    background(47, 62, 196);
+    
+    for(var i = 0; i < buildings.length; i++){
+        buildings[i].draw();
+        buildings[i].checkCharacterPosition();
+    }
+    
     fill(247, 214, 30);
     rect(40,212,20,20);
     rect(40,250,20,20);
@@ -456,6 +528,8 @@ var game2 = function(){
     ellipse(360,52,40,41);
     
     main.draw(20,200);
+    main.y += main.speed;
+    movement();
     
     
     for (var i = 0; i < enemies.length; i++) {
@@ -471,21 +545,6 @@ var game2 = function(){
         //check the robot if main hit enemy
         main.checkForFruit(fruits[j]);
     }
-    
-     if (keyIsPressed && keyCode === UP) {
-        main.hop();
-    } else { //(152 < main.y){
-       main.fall();
-    } //if space bar is pressed char jumps, else it continuosly falls
-        
-        
-    if (keyIsPressed && keyCode === RIGHT) {
-        main.run();
-    }
-    if (keyIsPressed && keyCode === LEFT) {
-        main.back();
-    }
-    
     
     if (main.y >= 300){
         fill(97, 0, 0);
@@ -511,17 +570,19 @@ var game2 = function(){
 
 
 var lastScene = function(){
+    
     stroke(0, 0, 0);
     background(0, 9, 51);
     
-    fill(166, 166, 166);
-    rect(0,179,94,236);
-    rect(95,388,259,17);
-    rect(200,222,33,92);
-    rect(355,151,76,252);
     
-    rect(125,258,43,40);
-    rect(277,203,43,40);
+    for(var i = 0; i < buildings.length; i++){
+        buildings[i].draw();
+        
+        buildings[i].checkCharacterPosition();
+    }
+    
+    fill(166, 166, 166);
+    rect(95,388,259,17);//sidewalk
 
     fill(247, 214, 30);
     rect(60,212,20,20);
@@ -559,21 +620,9 @@ var lastScene = function(){
         main.checkForFruit(fruits[j]);
     }
     
-    if (keyIsPressed && keyCode === UP) {
-        main.hop();
-    } else {
-       main.fall();
-    } //if space bar is pressed char jumps, else it continuosly falls
-        
-        
-    if (keyIsPressed && keyCode === RIGHT) {
-        main.run();
-    }
-   
-    if (keyIsPressed && keyCode === LEFT) {
-        main.back();
-    }
-     
+    main.y += main.speed;
+    movement();
+    
     if (main.x <= 0){
         main.x = 0;
     }
@@ -619,15 +668,11 @@ draw = function() {
     else if(currentScene === 3){
         game2();
     }
-    /*
-    else if(currentScene === 4){
-        game3();
-    }
-    */
     else if(currentScene === 4){
         lastScene();
     }
 };
+
 
 
 

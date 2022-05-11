@@ -1,6 +1,5 @@
 
-
-var currentScene = 0;
+var currentScene = 4;
 var health = 15;
 var start = null;
 var m = createFont("monospace");
@@ -589,15 +588,14 @@ var lastScene = function(){
     rect(10,252,20,20);
     rect(60,252,20,20);
     rect(10,212,20,20);
-    rect(10,291,20,20); 
+    rect(10,291,20,20);
     rect(60,291,20,20);
     rect(206,240,20,20);
     rect(206,281,20,20);
-    
     rect(372,291,20,20);
     rect(372,252,20,20);
-    rect(372,212,20,20);
-    rect(372,172,20,20);
+  
+   
     
     noStroke();
     ellipse(110,17,10,10);
@@ -672,6 +670,5 @@ draw = function() {
         lastScene();
     }
 };
-
 
 

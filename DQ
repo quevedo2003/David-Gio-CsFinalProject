@@ -1,0 +1,455 @@
+var currentScene = 0;
+var points = 0;
+var m = createFont("monospace");
+var drawBitmoji = function(bitmojiX,bitmojiY,w) {
+    noStroke();
+    var Size = w;
+    var bitmojiW = (Size/100);
+    
+    fill(94, 53, 33);
+    rect(bitmojiX-bitmojiW*23,bitmojiY+bitmojiW*17,bitmojiW*45,bitmojiW*52);
+    rect(bitmojiX-bitmojiW*28,bitmojiY+bitmojiW*36.4,bitmojiW*55,bitmojiW*33,9);
+    fill(198,136,99);
+    ellipse(bitmojiX-bitmojiW,bitmojiY+bitmojiW,bitmojiW*48,bitmojiW*63); //Head 
+    fill(255);
+    arc(bitmojiX-(bitmojiW*23),bitmojiY+(bitmojiW*25),bitmojiW*18,bitmojiW*25,-97,104);//Left Chisel
+    arc(bitmojiX-(bitmojiW*-23),bitmojiY+bitmojiW*25,bitmojiW*18,bitmojiW*27,67, 270);//Right Chisel 
+    fill(227, 227, 227);
+    ellipse(bitmojiX+bitmojiW*-9,bitmojiY+bitmojiW*3,bitmojiW*10,bitmojiW*13);//Left Eye White
+    ellipse(bitmojiX+bitmojiW*9,bitmojiY+bitmojiW*3,bitmojiW*10,bitmojiW*13);//Right Eye White
+    fill(0, 0, 0);
+    ellipse(bitmojiX+bitmojiW*-8,bitmojiY+bitmojiW*5,bitmojiW*4,bitmojiW*5); //left eye ball
+    ellipse(bitmojiX+bitmojiW*10,bitmojiY+bitmojiW*5,bitmojiW*4,bitmojiW*5); //right eye ball
+    
+    quad(bitmojiX+bitmojiW*-32,bitmojiY+bitmojiW*2,bitmojiX+bitmojiW*-17,bitmojiY+bitmojiW*-24,bitmojiX+bitmojiW*13,bitmojiY+bitmojiW*-26,bitmojiX+bitmojiW*-11,bitmojiY+bitmojiW*-5);//Left Hair Piece
+    quad(bitmojiX+bitmojiW*32,bitmojiY+bitmojiW*2,bitmojiX+bitmojiW*17,bitmojiY+bitmojiW*-24,bitmojiX+bitmojiW*-13,bitmojiY+bitmojiW*-26,bitmojiX+bitmojiW*12,bitmojiY+bitmojiW*-5);//Right Hair Piece
+    arc(bitmojiX+bitmojiW*0,bitmojiY+bitmojiW*-21, bitmojiW*36, bitmojiW*22,-180,0);
+    fill(247, 187, 161);
+    arc(bitmojiX+bitmojiW*0,bitmojiY+bitmojiW*16, bitmojiW*13, bitmojiW*7,0, 180);//Lips
+    fill(0,0,0);
+    quad(bitmojiX+bitmojiW*9,bitmojiY+bitmojiW*14,bitmojiX+bitmojiW*17,bitmojiY+bitmojiW*19,bitmojiX+bitmojiW*-9,bitmojiY+bitmojiW*14,bitmojiX+bitmojiW*-17,bitmojiY+bitmojiW*19);
+    fill(255);
+    text("DQ",bitmojiX+bitmojiW*9,bitmojiY+bitmojiW*45,bitmojiW*9,bitmojiW*30);
+};//David Bitmoji
+var drawMoji = function(mojiX,mojiY,h){
+        var drawCabeza = function(mojiX,mojiY,h){
+        noStroke();
+        fill(245, 200, 168); //skintone
+        ellipse(mojiX,mojiY+(h/100*3),h/100*68,h/100*90); //cabeza
+
+        fill(255, 255, 255);
+        //arc(60,142,28,55,0,361); //cheakbones
+        //arc(140,142,28,55,0,361);
+
+        fill(48, 39, 35);
+        quad(mojiX-(h/100*48),mojiY+(h/100*47),mojiX-(h/100*41),mojiY-(h/100*32),mojiX-(h/100*1),mojiY-(h/100*45),mojiX-(h/100*26),mojiY-(h/100*2)); //hair
+        quad(mojiX+(h/100*48),mojiY+(h/100*47),mojiX+(h/100*37),mojiY-(h/100*32),mojiX-(h/100*1),mojiY-(h/100*45),mojiX+(h/100*25),mojiY-(h/100*3));
+        triangle(mojiX-(h/100*31),mojiY-(h/100*21),mojiX+(h/100*25),mojiY-(h/100*21),mojiX-(h/100*1),mojiY-(h/100*45));
+        //ellipse(98,68,77,27);
+        fill(245, 200, 168); //forehead 
+        //quad(70,95,128,94,108,71,84,71);
+
+        stroke(0, 0, 0);
+        fill(51, 38, 16);
+        ellipse(mojiX-(h/100*13),mojiY,(h/100)*8,(h/100)*6); //eyes
+        ellipse(mojiX+(h/100*13),mojiY,(h/100)*8,(h/100)*6);
+
+        fill(245, 200, 168);
+        bezier(mojiX-(h/100*1),mojiY+(h/100*2),mojiX+(h/100*14),mojiY+(h/100*27),mojiX-(h/100*6),mojiY+(h/100*19),mojiX-(h/100*3),mojiY+(h/100*17)); //nose
+
+        fill(255, 255, 255);
+        arc(mojiX+1*(h/100),mojiY+24*(h/100),23*(h/100),13*(h/100),0,180); //mouth
+        line(mojiX-(h/100*10),mojiY+(h/100*24),mojiX+(h/100*11),mojiY+(h/100*24));
+        };
+        var drawShirt = function(mojiX,mojiY,h){
+        noStroke();
+        fill(202, 172, 232);
+        quad(mojiX,mojiY+(h/100*48),mojiX,mojiY+(h/100*90),mojiX-(h/100*42),mojiY+(h/100*90),mojiX-(h/100*23),mojiY+(h/100*45)); //shirt
+        quad(mojiX,mojiY+(h/100*48),mojiX,mojiY+(h/100*90),mojiX+(h/100*42),mojiY+(h/100*90),mojiX+(h/100*23),mojiY+(h/100*45));
+
+        stroke(0, 0, 0);
+        line(mojiX-(h/100*13),mojiY+(h/100*77),mojiX-(h/100*13),mojiY+(h/100*60)); // G back
+        line(mojiX-(h/100*4),mojiY+(h/100*77),mojiX-(h/100*13),mojiY+(h/100*77)); //bottom of G
+        line(mojiX-(h/100*4),mojiY+(h/100*60),mojiX-(h/100*13),mojiY+(h/100*60)); //top of G
+        line(mojiX-(h/100*4),mojiY+(h/100*77),mojiX-(h/100*4),mojiY+(h/100*69)); // G up
+        line(mojiX-(h/100*5),mojiY+(h/100*69),mojiX-(h/100*7),mojiY+(h/100*69));//G sideways in
+        line(mojiX+(h/100*8),mojiY+(h/100*77),mojiX+(h/100*8),mojiY+(h/100*61)); //C back
+        line(mojiX+(h/100*18),mojiY+(h/100*60),mojiX+(h/100*8),mojiY+(h/100*60)); //top of C
+        line(mojiX+(h/100*18),mojiY+(h/100*77),mojiX+(h/100*8),mojiY+(h/100*77)); //bottom of C
+        };
+        drawCabeza(mojiX,mojiY,h);
+        drawShirt(mojiX,mojiY,h);
+};//Gio Bitmoji
+var drawCharacter = function(x,y,h){
+    noStroke();
+    fill(255, 171, 241);
+    ellipse(x,y+(h/100*3),h/100*90,h/100*90); //head
+    
+    ellipse(x-(h/100*40),y+(h/100*58),h/100*-20,h/100*18);
+    ellipse(x+(h/100*40),y+(h/100*58),h/100*-20,h/100*18);//arms
+    
+    fill(0, 0, 0);
+    ellipse(x-(h/100*16),y,(h/100)*22,(h/100)*51); //eyes
+    ellipse(x+(h/100*16),y,(h/100)*22,(h/100)*51);//eyes
+    
+    fill(100, 204, 222);
+    quad(x,y+(h/100*48),x,y+(h/100*90),x-(h/100*31),y+(h/100*90),x-(h/100*23),y+(h/100*44));
+    quad(x,y+(h/100*48),x,y+(h/100*90),x+(h/100*31),y+(h/100*90),x+(h/100*23),y+(h/100*44));//body
+    
+}; //main character function
+var drawEnemy = function(x,y,h){
+    noStroke();
+    fill(168, 22, 22);
+    quad(x+(h/100*21),y+(h/100*80),x,y+(h/100*132),x+(h/100*54),y+(h/100*132),x+(h/100*29),y+(h/100*80));//body
+    
+    fill(240, 88, 0);
+    ellipse(x+(h/100*26),y+(h/100*50),h/100*87,h/100*68);//head
+    //quad(x+(h/100*52),y+(h/100*83),x+(h/100*69),y-(h/100*-58),x-(h/100*14),y-(h/100*-62),x+(h/100*0),y-(h/100*-82));//jaw
+    
+    fill(0, 0, 0);
+    ellipse(x-(h/100*-42),y-(h/100*-49),(h/100)*24,(h/100)*18);
+    ellipse(x+(h/100*12),y+(h/100*49),(h/100)*24,(h/100)*19);//eyes
+    
+    stroke(0, 0, 0);
+    line(x+(h/100*53),y-(h/100*-37),x+(h/100*30),y-(h/100*-41));
+    line(x-(h/100*0),y+(h/100*37),x-(h/100*-24),y+(h/100*41));//eyebrows
+    
+    noStroke();
+    fill(240, 88, 0);
+    ellipse(x-(h/100*-3),y+(h/100*99),h/100*-16,h/100*13);
+    ellipse(x+(h/100*49),y+(h/100*99),h/100*-16,h/100*13);//arms
+}; //enemy function
+var start = null;
+
+var Button = function(config) {
+    this.x = config.x || 0;
+    this.y = config.y || 0;
+    this.width = config.width || 150;
+    this.height = config.height || 50;
+    this.label = config.label || "Click";
+    this.onClick = config.onClick || function() {};
+    this.color = config.color;
+   
+};
+ 
+Button.prototype.draw = function() {
+    fill(this.color);
+    rect(this.x, this.y, this.width, this.height, 5);
+    fill(0, 0, 0);
+    textSize(19);
+    textAlign(LEFT, TOP);
+    text(this.label, this.x+10, this.y+this.height/4);
+};
+
+Button.prototype.isMouseInside = function() {
+    return mouseX > this.x &&
+           mouseX < (this.x + this.width) &&
+           mouseY > this.y &&
+           mouseY < (this.y + this.height);
+};
+
+Button.prototype.handleMouseClick = function() {
+    if (this.isMouseInside()) {
+        this.onClick();
+    }
+};
+
+var startBtn = new Button({
+    x: 124,
+    y: 227,
+    color: color(255, 0, 0),
+    label: "    Start",
+    onClick: function() {
+            currentScene = 1;
+    }
+});//Start button
+
+var goBtn = new Button({
+    x: 128,
+    y: 339,
+    color: color(250, 37, 37),
+    label: "  Let's Go!",
+    onClick: function() {
+            currentScene = 2;
+            start = round(frameCount/60);
+    }
+});// instruction scene button
+
+
+
+var Fruit = function(x,y){
+    this.x = x;
+    this.y = y;
+};
+
+Fruit.prototype.draw = function() {
+    image(getImage("cute/GemOrange"),this.x,this.y,40,40);
+};//fruit for player to collect
+
+var fruits = [];
+
+for (var i = 0; i < 10; i++) {  
+    fruits.push(new Fruit(i * 127 - 17700 , random(20, 260))); 
+}
+
+
+
+var Char = function(x, y) {
+    this.x = x;
+    this.y = y;
+    this.speed = 5;
+}; //make Char mainects from this class, expandable
+
+Char.prototype.draw = function() {
+    this.y = constrain(this.y, 0, height-50);
+    drawCharacter( this.x, this.y,40);
+    };//draws charcater
+
+Char.prototype.hop = function() {
+    this.y -= this.speed; // makes character go up
+};
+
+Char.prototype.fall = function() {
+    this.y += this.speed;
+    var temp = round(frameCount/60)-start;
+};
+
+Char.prototype.run = function(){
+    this.x += this.speed * 2/5;
+};
+
+Char.prototype.back = function(){
+    this.x -= this.speed * 2/5;
+};
+
+Char.prototype.checkForFruit = function(fruit) {
+    if ((fruit.x >= this.x && fruit.x <= (this.x + 40)) &&
+        (fruit.y >= this.y && fruit.y <= (this.y + 40))) {
+        fruit.y = -100;
+        points += 5;
+    }
+};
+
+var Enemy = function(x, y) {
+    this.x = x;
+    this.y = y;
+};
+
+Enemy.prototype.draw = function() {
+    this.y = constrain(this.y, 0, height-50);
+    drawEnemy( this.x, this.y,40);
+};
+
+var enemies = [];
+
+for (var i = 0; i < 50; i++) {  
+    enemies.push(new Enemy(i * 127 - 17700 , random(20, 260))); 
+}//fix later
+
+Char.prototype.checkForEnemyAttack = function(enemy) {
+    if ((enemy.x >= this.x && enemy.x <= (this.x + 40)) &&
+        (enemy.y >= this.y && enemy.y <= (this.y + 40))) {
+        enemy.y = -100;
+        points -= 10;
+    }
+};
+
+var main = new Char(40,141);
+
+
+mouseClicked = function() {
+    if(currentScene === 0){
+         startBtn.handleMouseClick();
+    }
+    else{
+        goBtn.handleMouseClick();
+    }
+    
+};
+
+
+var splash = function(){
+    background(154, 228, 252);
+    fill(0, 0, 0);
+    textFont(m,43);
+    text("Alien Platformer", 15,103);
+    textSize(19);
+    text("",122,166);
+    startBtn.draw();   
+    drawBitmoji(331,349,75);
+    drawMoji(54,355,50);
+};//first scene that leads to game
+
+var intro = function(){
+    background(92, 163, 255);
+    fill(0, 0, 0);
+    textSize(36);
+    text("Story",152,8);
+    text("Controls",123,222);
+    goBtn.draw();
+    
+};//instruction and story; needs more text
+
+var building = function(x,y, width, height){
+    //Building to the left
+    this.x = x;
+    this.y = y;
+    this.w = width;
+    this.h = height;
+    
+};
+
+building.prototype.draw = function(){
+    fill(166, 166, 166); //0,179,94,220
+    rect(0,179,94,220);
+    if(main.y < this.y && main.x < this.x + this.w + 20 && main.x + 90 > this.x){
+        main.y -= main.speed;
+    }
+    else{
+        main.y += main.speed;
+    }
+};
+
+var building1 = new building(0,179,94,220);
+
+
+
+
+
+
+var game1 = function(){
+
+stroke(0, 0, 0);
+    background(102, 116, 247);
+    
+    building1.draw();
+    //Sidewalk
+    rect(95,389,103,10);
+    rect(259,389,65,10);
+    // 
+    //Middle Building
+    rect(200,217,58,220);
+    
+    //Building to the Right
+    rect(324,217,98,290);
+   //
+    //Windows to the left
+    fill(247, 214, 30);
+    rect(58,212,20,20);
+    rect(11,252,20,20);
+    rect(61,252,20,20);
+    rect(11,212,20,20);
+    rect(11,291,20,20); 
+    rect(61,291,20,20);
+    //
+    
+    //Middle Windows
+    rect(219,240,20,20);
+    rect(218,281,20,20);
+    rect(218,323,20,20);
+    //
+    //Windows to the right
+    rect(340,234,20,20);
+    rect(340,275,20,20);
+    rect(340,320,20,20);
+    
+    
+    //Stars
+    ellipse(107,17,10,10);
+    ellipse(77,54,10,10);
+    ellipse(213,17,10,10);
+    ellipse(179,85,10,10);
+    ellipse(29,17,10,10);
+    ellipse(253,65,10,10);
+    ellipse(326,13,10,10);
+    //
+    
+    //Moon
+    fill(210, 222, 98);
+    ellipse(360,52,40,41);
+    
+    main.draw(20,200);
+    main.y += main.speed;
+     if (keyIsPressed && keyCode === UP) {
+         if(keyReleased){
+        main.hop();
+         }
+        //println("It works");
+    }// if space bar is pressed char jumps, else it continuosly falls
+       //main.y += main.speed;
+       //println(main.x);
+    if (keyIsPressed && keyCode === RIGHT) {
+        main.run();
+        //println("It works");
+    }
+    if (keyIsPressed && keyCode === LEFT) {
+        main.back();
+        //println("It works");
+    }
+    
+    
+    
+    
+    if (main.x >= 400){
+        //currentScene = 2;
+        main.x = 0;
+    }
+    
+    /*for (var i = 0; i < enemies.length; i++) {
+        
+        enemies[i].draw();
+        //check the robot if Gio hits robot
+        Char.checkForEnemyAttack(enemies[i]);
+        //robots[i].x += speed; //moves robots left to right
+        
+        for (var j = 50; j > enemies.length; j++){
+      enemies[j].x += random(1,2);
+    }
+    }*/
+};//first game scene
+
+var game2 = function(){
+    var scene = 2;
+    background(77, 88, 186);
+    //
+    fill(166, 166, 166);
+    rect(-4,188,83,215);
+    rect(192,183,47,11);
+    rect(102,147,58,11);
+    rect(278,222,15,15);
+    rect(303,183,15,15);
+    rect(325,222,86,183);
+    rect(81,388,245,11);
+    //
+    fill(247, 214, 30);
+    rect(40,212,20,20);
+    rect(40,250,20,20);
+    rect(40,290,20,20);
+    rect(40,331,20,20);
+    rect(335,241,20,20);
+    rect(335,284,20,20);
+    rect(335,333,20,20);
+    rect(142,149,10,8);
+    rect(115,149,10,8);
+    rect(200,185,10,8);
+    rect(222,185,10,8);
+    //
+    fill(222, 179, 100);
+    
+    ellipse(360,52,40,41);
+};
+
+
+
+
+draw = function() {
+    if(currentScene === 0){
+        splash();
+    }
+    else if(currentScene === 1){
+        intro();
+    }
+    else if(currentScene === 2){
+        game1();
+    }
+};

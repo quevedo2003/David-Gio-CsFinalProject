@@ -1,6 +1,6 @@
 
 
-var currentScene = 4;
+var currentScene = 0;
 var health = 15;
 var start = null;
 var m = createFont("monospace");
@@ -319,7 +319,7 @@ building[11] = new building(277,203,43,40);
 
 function movement(){
     if(!main.fall){
-        if (keyIsPressed && keyCode === UP) {
+        if (mouseIsPressed) {
              main.hop();
         }
         else{ main.speed = 5; }
@@ -672,7 +672,6 @@ draw = function() {
         lastScene();
     }
 };
-
 
 
 

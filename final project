@@ -1,5 +1,6 @@
 var currentScene = 0;
 var health = 15;
+var start = null;
 var m = createFont("monospace");
 var drawBitmoji = function(bitmojiX,bitmojiY,w) {
     noStroke();
@@ -192,6 +193,7 @@ for (var i = 0; i < 10; i++) {
 var Char = function(x, y) {
     this.x = x;
     this.y = y;
+    this.speed = 5;
 }; //make Char objects from this class, expandable
 
 Char.prototype.draw = function() {
@@ -200,20 +202,20 @@ Char.prototype.draw = function() {
     };//draws charcater
 
 Char.prototype.hop = function() {
-    this.y -= 5; // makes character go up
+    this.y -= this.speed; // makes character go up
 };
 
 Char.prototype.fall = function() {
-        this.y += 5;
-    
+    this.y += 5;
+    var temp = round(frameCount/60)-start; 
 };
 
 Char.prototype.run = function(){
-    this.x +=2;
+    this.x += this.speed * 2.5;
 };
 
 Char.prototype.back = function(){
-    this.x -=2;
+    this.x -= this.speed * 2.5;
 };
 
 Char.prototype.checkForFruit = function(fruit) {
@@ -259,6 +261,30 @@ for (var i = 0; i < 50; i++) {
 }//fix later
 
 
+var building = function(x,y, width, height){
+    //Building to the left
+    this.x = x;
+    this.y = y;
+    this.w = width;
+    this.h = height;
+    
+};
+
+building.prototype.draw = function(){
+    fill(166, 166, 166); //0,179,94,220
+    rect(0,179,94,220);
+    if(main.y < this.y && main.x < this.x + this.w + 20 && main.x + 90 > this.x){
+        main.y -= main.speed;
+    }
+    else{
+        main.y += main.speed;
+    }
+};
+
+var building1 = new building(0,179,94,220);
+
+
+
 var boss1 = new Enemy(135,203);//bosses for end scene
 var boss2 = new Enemy(287,149);
 
@@ -298,7 +324,7 @@ var intro = function(){
     text("trying to kill him! You have to help!",10,124);
     text("If those lousy neighbors hit him,",35,157);
     text("Eat some fruit to heal!",90,190);
-    text("To jump: Press Space",100,262);
+    text("To jump: press the Up Arrow",70,262);
     text("To move forward: press the Right Arrow",10,294);
     goBtn.draw();
     
@@ -309,7 +335,7 @@ var game1 = function(){
     background(115, 129, 255);
 
     fill(166, 166, 166);
-    rect(0,179,94,220);
+    building1.draw();//first building
     rect(95,389,103,10);
     rect(200,217,58,220);
     rect(325,217,98,290);
@@ -374,6 +400,10 @@ var game1 = function(){
         main.back();
     }
     
+    
+    if (main.y >= 300){
+        currentScene = 0;
+    }//when character falls to ground
     
     if (main.x >= 400){
         //currentScene = 2;
@@ -546,7 +576,7 @@ var game4 = function(){
         main.checkForFruit(fruits[j]);
     }
     
-     if (keyIsPressed && key.code === 32) {
+     if (keyIsPressed && keyCode === UP) {
         main.hop();
     } else { //(152 < main.y){
        main.fall();
@@ -682,4 +712,5 @@ draw = function() {
         lastScene();
     }
 };
+
 

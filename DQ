@@ -5,7 +5,7 @@ var drawBitmoji = function(bitmojiX,bitmojiY,w) {
     noStroke();
     var Size = w;
     var bitmojiW = (Size/100);
-
+    
     fill(94, 53, 33);
     rect(bitmojiX-bitmojiW*23,bitmojiY+bitmojiW*17,bitmojiW*45,bitmojiW*52);
     rect(bitmojiX-bitmojiW*28,bitmojiY+bitmojiW*36.4,bitmojiW*55,bitmojiW*33,9);
@@ -20,7 +20,7 @@ var drawBitmoji = function(bitmojiX,bitmojiY,w) {
     fill(0, 0, 0);
     ellipse(bitmojiX+bitmojiW*-8,bitmojiY+bitmojiW*5,bitmojiW*4,bitmojiW*5); //left eye ball
     ellipse(bitmojiX+bitmojiW*10,bitmojiY+bitmojiW*5,bitmojiW*4,bitmojiW*5); //right eye ball
-
+    
     quad(bitmojiX+bitmojiW*-32,bitmojiY+bitmojiW*2,bitmojiX+bitmojiW*-17,bitmojiY+bitmojiW*-24,bitmojiX+bitmojiW*13,bitmojiY+bitmojiW*-26,bitmojiX+bitmojiW*-11,bitmojiY+bitmojiW*-5);//Left Hair Piece
     quad(bitmojiX+bitmojiW*32,bitmojiY+bitmojiW*2,bitmojiX+bitmojiW*17,bitmojiY+bitmojiW*-24,bitmojiX+bitmojiW*-13,bitmojiY+bitmojiW*-26,bitmojiX+bitmojiW*12,bitmojiY+bitmojiW*-5);//Right Hair Piece
     arc(bitmojiX+bitmojiW*0,bitmojiY+bitmojiW*-21, bitmojiW*36, bitmojiW*22,-180,0);
@@ -84,36 +84,36 @@ var drawCharacter = function(x,y,h){
     noStroke();
     fill(255, 171, 241);
     ellipse(x,y+(h/100*3),h/100*90,h/100*90); //head
-
+    
     ellipse(x-(h/100*40),y+(h/100*58),h/100*-20,h/100*18);
     ellipse(x+(h/100*40),y+(h/100*58),h/100*-20,h/100*18);//arms
-
+    
     fill(0, 0, 0);
     ellipse(x-(h/100*16),y,(h/100)*22,(h/100)*51); //eyes
     ellipse(x+(h/100*16),y,(h/100)*22,(h/100)*51);//eyes
-
+    
     fill(100, 204, 222);
     quad(x,y+(h/100*48),x,y+(h/100*90),x-(h/100*31),y+(h/100*90),x-(h/100*23),y+(h/100*44));
     quad(x,y+(h/100*48),x,y+(h/100*90),x+(h/100*31),y+(h/100*90),x+(h/100*23),y+(h/100*44));//body
-
+    
 }; //main character function
 var drawEnemy = function(x,y,h){
     noStroke();
     fill(168, 22, 22);
     quad(x+(h/100*21),y+(h/100*80),x,y+(h/100*132),x+(h/100*54),y+(h/100*132),x+(h/100*29),y+(h/100*80));//body
-
+    
     fill(240, 88, 0);
     ellipse(x+(h/100*26),y+(h/100*50),h/100*87,h/100*68);//head
     //quad(x+(h/100*52),y+(h/100*83),x+(h/100*69),y-(h/100*-58),x-(h/100*14),y-(h/100*-62),x+(h/100*0),y-(h/100*-82));//jaw
-
+    
     fill(0, 0, 0);
     ellipse(x-(h/100*-42),y-(h/100*-49),(h/100)*24,(h/100)*18);
     ellipse(x+(h/100*12),y+(h/100*49),(h/100)*24,(h/100)*19);//eyes
-
+    
     stroke(0, 0, 0);
     line(x+(h/100*53),y-(h/100*-37),x+(h/100*30),y-(h/100*-41));
     line(x-(h/100*0),y+(h/100*37),x-(h/100*-24),y+(h/100*41));//eyebrows
-
+    
     noStroke();
     fill(240, 88, 0);
     ellipse(x-(h/100*-3),y+(h/100*99),h/100*-16,h/100*13);
@@ -129,9 +129,9 @@ var Button = function(config) {
     this.label = config.label || "Click";
     this.onClick = config.onClick || function() {};
     this.color = config.color;
-
+   
 };
-
+ 
 Button.prototype.draw = function() {
     fill(this.color);
     rect(this.x, this.y, this.width, this.height, 5);
@@ -171,7 +171,7 @@ var goBtn = new Button({
     label: "  Let's Go!",
     onClick: function() {
             currentScene = 2;
-            start = round(frameCount/60);
+            
     }
 });// instruction scene button
 
@@ -193,33 +193,39 @@ for (var i = 0; i < 10; i++) {
 }
 
 
-
 var Char = function(x, y) {
     this.x = x;
     this.y = y;
     this.speed = 5;
+    this.speed_X = 5;
+    this.Onbuilding = true;
+    this.fall = false;
+    this.HeightLimit = 0;
 }; //make Char mainects from this class, expandable
 
 Char.prototype.draw = function() {
-    this.y = constrain(this.y, 0, height-50);
+    
     drawCharacter( this.x, this.y,40);
     };//draws charcater
 
 Char.prototype.hop = function() {
-    this.y -= this.speed; // makes character go up
+    if(this.y > this.HeightLimit){
+     this.y -= 10; // makes character go down
+     this.fall = false;
+    }else{ this.fall = true;}
 };
 
-Char.prototype.fall = function() {
+Char.prototype.Fall = function() {
     this.y += this.speed;
-    var temp = round(frameCount/60)-start;
+    
 };
 
 Char.prototype.run = function(){
-    this.x += this.speed * 2/5;
+    this.x += this.speed_X * 2/5;
 };
 
 Char.prototype.back = function(){
-    this.x -= this.speed * 2/5;
+    this.x -= this.speed_X * 2/5;
 };
 
 Char.prototype.checkForFruit = function(fruit) {
@@ -264,7 +270,7 @@ mouseClicked = function() {
     else{
         goBtn.handleMouseClick();
     }
-
+    
 };
 
 
@@ -287,7 +293,7 @@ var intro = function(){
     text("Story",152,8);
     text("Controls",123,222);
     goBtn.draw();
-
+    
 };//instruction and story; needs more text
 
 var building = function(x,y, width, height){
@@ -296,42 +302,49 @@ var building = function(x,y, width, height){
     this.y = y;
     this.w = width;
     this.h = height;
-
+    
 };
 
 building.prototype.draw = function(){
     fill(166, 166, 166); //0,179,94,220
-    rect(0,179,94,220);
-    if(main.y < this.y && main.x < this.x + this.w + 20 && main.x + 90 > this.x){
-        main.y -= main.speed;
-    }
-    else{
-        main.y += main.speed;
-    }
+    rect(this.x,this.y,this.w,this.h);
+    
 };
 
+building.prototype.checkCharacterPosition = function(){
+    
+    
+        
+    if(main.y < this.y + 5 && main.x < this.x + this.w + 20 && main.x > this.x && main.y > this.y - 30){
+        
+        main.y -= main.speed;
+        main.HeightLimit = this.y - 120;
+        main.fall = false;
+        println("here on the ground");
+    }
+    
+    
+    
+};
 var building1 = new building(0,179,94,220);
-
-
-
-
-
-
+var building2 = new building(200,217,58,220);
+var building3 = new building(324,217,98,290);
 var game1 = function(){
 
 stroke(0, 0, 0);
     background(102, 116, 247);
-
+    
     building1.draw();
+    
     //Sidewalk
     rect(95,389,103,10);
     rect(259,389,65,10);
     // 
     //Middle Building
-    rect(200,217,58,220);
-
+    building2.draw();
+    
     //Building to the Right
-    rect(324,217,98,290);
+    building3.draw();
    //
     //Windows to the left
     fill(247, 214, 30);
@@ -342,7 +355,7 @@ stroke(0, 0, 0);
     rect(11,291,20,20); 
     rect(61,291,20,20);
     //
-
+    
     //Middle Windows
     rect(219,240,20,20);
     rect(218,281,20,20);
@@ -352,8 +365,8 @@ stroke(0, 0, 0);
     rect(340,234,20,20);
     rect(340,275,20,20);
     rect(340,320,20,20);
-
-
+    
+    
     //Stars
     ellipse(107,17,10,10);
     ellipse(77,54,10,10);
@@ -363,21 +376,27 @@ stroke(0, 0, 0);
     ellipse(253,65,10,10);
     ellipse(326,13,10,10);
     //
-
+    
     //Moon
     fill(210, 222, 98);
     ellipse(360,52,40,41);
-
+    
     main.draw(20,200);
-    main.y += main.speed;
-     if (keyIsPressed && keyCode === UP) {
-         if(keyReleased){
-        main.hop();
-         }
-        //println("It works");
-    }// if space bar is pressed char jumps, else it continuosly falls
-       //main.y += main.speed;
-       //println(main.x);
+    
+    //println(main.Onbuilding);
+     
+     
+    if(!main.fall){
+        if (mouseIsPressed) {
+             
+             main.hop();
+             
+            println("It works");
+        }
+        else{ main.speed = 5; }// if space bar is pressed char jumps, else it continuosly falls
+           //main.y += main.speed;
+           //println(main.x);
+    }
     if (keyIsPressed && keyCode === RIGHT) {
         main.run();
         //println("It works");
@@ -386,22 +405,28 @@ stroke(0, 0, 0);
         main.back();
         //println("It works");
     }
-
-
-
-
+    
+    main.y += main.speed;
+    building1.checkCharacterPosition();
+    building2.checkCharacterPosition();
+    building3.checkCharacterPosition();
+     
+    
+    
+    
+    
     if (main.x >= 400){
         //currentScene = 2;
         main.x = 0;
     }
-
+    
     /*for (var i = 0; i < enemies.length; i++) {
-
+        
         enemies[i].draw();
         //check the robot if Gio hits robot
         Char.checkForEnemyAttack(enemies[i]);
         //robots[i].x += speed; //moves robots left to right
-
+        
         for (var j = 50; j > enemies.length; j++){
       enemies[j].x += random(1,2);
     }
@@ -435,7 +460,7 @@ var game2 = function(){
     rect(222,185,10,8);
     //
     fill(222, 179, 100);
-
+    
     ellipse(360,52,40,41);
 };
 

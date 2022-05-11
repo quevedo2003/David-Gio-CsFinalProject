@@ -1,4 +1,5 @@
-var currentScene = 0;
+
+var currentScene = 2;
 var health = 15;
 var start = null;
 var m = createFont("monospace");
@@ -304,7 +305,8 @@ var splash = function(){
     background(154, 228, 252);
     fill(0, 0, 0);
     textFont(m,43);
-    text("Alien Platformer", 15,103);
+    text("Loco Lost", 91,65);
+    text("His Keys!", 98,123);
     textSize(19);
     text("",122,166);
     startBtn.draw();   
@@ -386,9 +388,9 @@ var game1 = function(){
         main.checkForFruit(fruits[j]);
     }
     
-     if (keyIsPressed && key.code === 32) {
+     if (keyIsPressed && keyCode === UP) {
         main.hop();
-    } else { //(152 < main.y){
+    } else { 
        main.fall();
     } //if space bar is pressed char jumps, else it continuosly falls
         
@@ -402,7 +404,9 @@ var game1 = function(){
     
     
     if (main.y >= 300){
-        currentScene = 0;
+        fill(97, 0, 0);
+        textSize(60);
+        text("Loco died!",70,120);
     }//when character falls to ground
     
     if (main.x >= 400){
@@ -421,7 +425,6 @@ var game1 = function(){
     text("Health:" + health,10,20);
     
 };//first game scene
-
 
 var game2 = function(){
     //scene 3
@@ -471,7 +474,7 @@ var game2 = function(){
         main.checkForFruit(fruits[j]);
     }
     
-     if (keyIsPressed && key.code === 32) {
+     if (keyIsPressed && keyCode === UP) {
         main.hop();
     } else { //(152 < main.y){
        main.fall();
@@ -485,6 +488,12 @@ var game2 = function(){
         main.back();
     }
     
+    
+    if (main.y >= 300){
+        fill(97, 0, 0);
+        textSize(60);
+        text("Loco died!",70,120);
+    }//when character falls to ground
     
     if (main.x >= 400){
         //currentScene = 2;
@@ -502,61 +511,10 @@ var game2 = function(){
     text("Health:" + health,10,20);
 };
 
+/*
 var game3 = function(){
     
     background(52, 72, 201);
-    
-    main.draw(20,200);
-    
-    
-    for (var i = 0; i < enemies.length; i++) {
-        
-        enemies[i].draw();
-        //check the robot if main hit enemy
-        main.checkForEnemyAttack(enemies[i]);
-        //enemies[i].x += 1; //moves enemies left to right
-    }
-    
-    for (var j = 0; j < fruits.length; j++) {
-        
-        fruits[j].draw();
-        //check the robot if main hit enemy
-        main.checkForFruit(fruits[j]);
-    }
-    
-     if (keyIsPressed && key.code === 32) {
-        main.hop();
-    } else { //(152 < main.y){
-       main.fall();
-    } //if space bar is pressed char jumps, else it continuosly falls
-        
-        
-    if (keyIsPressed && keyCode === RIGHT) {
-        main.run();
-    }
-    if (keyIsPressed && keyCode === LEFT) {
-        main.back();
-    }
-    
-    
-    if (main.x >= 400){
-        //currentScene = 2;
-        main.x = 0;
-        currentScene = 4;
-        //starts next scene
-    }
-    
-    if (main.x <= 0){
-        main.x = 0;
-    }//cant leave off left side of screen
-    
-    fill(255, 255, 255);
-    textSize(20);
-    text("Health:" + health,10,20);
-};
-
-var game4 = function(){
-    
     
     main.draw(20,200);
     
@@ -594,7 +552,7 @@ var game4 = function(){
     if (main.x >= 400){
         //currentScene = 2;
         main.x = 0;
-        currentScene = 6;
+        currentScene = 5;
         //starts next scene
     }
     
@@ -606,6 +564,7 @@ var game4 = function(){
     textSize(20);
     text("Health:" + health,10,20);
 };
+*/
 
 var lastScene = function(){
     stroke(0, 0, 0);
@@ -665,10 +624,11 @@ var lastScene = function(){
         main.back();
     }
      
-    
+    if (main.x <= 0){
+        main.x = 0;
+    }
     
     if (main.x >= 400){
-        //currentScene = 2;
         main.x = 0;
     }
     
@@ -686,6 +646,12 @@ var lastScene = function(){
         text("You Lose!",66,161);
         //currentScene = 0; // or new page that says you lose start again?
     }
+    
+     if (main.y >= 300){
+        fill(110, 42, 42);
+        textSize(65);
+        text("You Lose!",66,161);
+    }//when character falls to ground
 };
 
 
@@ -702,13 +668,12 @@ draw = function() {
     else if(currentScene === 3){
         game2();
     }
+    /*
     else if(currentScene === 4){
         game3();
     }
-    else if(currentScene === 5){
-        game4();
-    }
-    else if(currentScene === 6){
+    */
+    else if(currentScene === 4){
         lastScene();
     }
 };

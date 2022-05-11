@@ -252,7 +252,7 @@ var main = new Char(40,141);
 var fruits = [];
 
 for (var j = 0; j < 2; j++) {  
-    fruits.push(new Fruit(j * -120 - (-243) , 91)); 
+    fruits.push(new Fruit(random(60,300), 91)); 
 }
 
 var enemies = [];
@@ -382,7 +382,6 @@ var game1 = function(){
     }
     
     for (var j = 0; j < fruits.length; j++) {
-        
         fruits[j].draw();
         //check the robot if main hit enemy
         main.checkForFruit(fruits[j]);
@@ -468,7 +467,6 @@ var game2 = function(){
     }
     
     for (var j = 0; j < fruits.length; j++) {
-        
         fruits[j].draw();
         //check the robot if main hit enemy
         main.checkForFruit(fruits[j]);
@@ -511,60 +509,6 @@ var game2 = function(){
     text("Health:" + health,10,20);
 };
 
-/*
-var game3 = function(){
-    
-    background(52, 72, 201);
-    
-    main.draw(20,200);
-    
-    
-    for (var i = 0; i < enemies.length; i++) {
-        
-        enemies[i].draw();
-        //check the robot if main hit enemy
-        main.checkForEnemyAttack(enemies[i]);
-        //enemies[i].x += 1; //moves enemies left to right
-    }
-    
-    for (var j = 0; j < fruits.length; j++) {
-        
-        fruits[j].draw();
-        //check the robot if main hit enemy
-        main.checkForFruit(fruits[j]);
-    }
-    
-     if (keyIsPressed && keyCode === UP) {
-        main.hop();
-    } else { //(152 < main.y){
-       main.fall();
-    } //if space bar is pressed char jumps, else it continuosly falls
-        
-        
-    if (keyIsPressed && keyCode === RIGHT) {
-        main.run();
-    }
-    if (keyIsPressed && keyCode === LEFT) {
-        main.back();
-    }
-    
-    
-    if (main.x >= 400){
-        //currentScene = 2;
-        main.x = 0;
-        currentScene = 5;
-        //starts next scene
-    }
-    
-    if (main.x <= 0){
-        main.x = 0;
-    }//cant leave off left side of screen
-    
-    fill(255, 255, 255);
-    textSize(20);
-    text("Health:" + health,10,20);
-};
-*/
 
 var lastScene = function(){
     stroke(0, 0, 0);
@@ -609,9 +553,15 @@ var lastScene = function(){
     boss1.draw(20,200);
     boss2.draw(20,200);
     
+    for (var j = 0; j < 1; j++) {
+        fruits[j].draw();
+        //check the robot if main hit enemy
+        main.checkForFruit(fruits[j]);
+    }
+    
     if (keyIsPressed && keyCode === UP) {
         main.hop();
-    } else { //(152 < main.y){
+    } else {
        main.fall();
     } //if space bar is pressed char jumps, else it continuosly falls
         
@@ -643,6 +593,7 @@ var lastScene = function(){
     if(main.x >= boss1.x && main.y >= boss1.y || main.x >= boss2.x && main.y >= boss2.y){
         fill(110, 42, 42);
         textSize(65);
+        health -= 10; 
         text("You Lose!",66,161);
         //currentScene = 0; // or new page that says you lose start again?
     }
@@ -677,5 +628,6 @@ draw = function() {
         lastScene();
     }
 };
+
 
 

@@ -306,20 +306,20 @@ var building = function(x,y, width, height){
 };
 
 building.prototype.draw = function(){
-    fill(166, 166, 166); //0,179,94,220
+    fill(166, 166, 166); //
     rect(this.x,this.y,this.w,this.h);
     
 };
 
-building.prototype.checkCharacterPosition = function(){
+building.prototype.checkCharacterPosition = function(Main){
     
     
         
-    if(main.y < this.y - 20 && main.x < this.x + this.w + 20 && main.x > this.x && main.y > this.y - 30){
+    if(Main.y < this.y - 20 && Main.x < this.x + this.w + 20 && Main.x > this.x && Main.y > this.y - 30){
         
-        main.y -= main.speed;
-        main.HeightLimit = this.y - 130;
-        main.fall = false;
+        Main.y -= Main.speed;
+        Main.HeightLimit = this.y - 130;
+        Main.fall = false;
         println("here on the ground");
     }
     
@@ -332,24 +332,24 @@ buildings[0] = new building(0,179,94,220);
 buildings[1] = new building(200,217,58,220);
 buildings[2] = new building(324,217,98,290);
 
-function movement(){
-    if(!main.fall){
+function movement(Main){
+    if(!Main.fall){
         if (mouseIsPressed) {
              
-             main.hop();
+             Main.hop();
              
             println("It works");
         }
-        else{ main.speed = 5; }// if space bar is pressed char jumps, else it continuosly falls
+        else{ Main.speed = 5; }// if space bar is pressed char jumps, else it continuosly falls
            //main.y += main.speed;
            //println(main.x);
     }
     if (keyIsPressed && keyCode === RIGHT) {
-        main.run();
+        Main.run();
         //println("It works");
     }
     if (keyIsPressed && keyCode === LEFT) {
-        main.back();
+        Main.back();
         //println("It works");
     }
 }
@@ -402,7 +402,7 @@ function game1(){
     }
     for(var i = 0; i < buildings.length; i++){
         buildings[i].draw();
-        buildings[i].checkCharacterPosition();
+        buildings[i].checkCharacterPosition(main);
     }
     
     decoration();
@@ -411,14 +411,15 @@ function game1(){
     fill(210, 222, 98);
     ellipse(360,52,40,41);
     
-    main.draw(20,200);
-    movement();
+    main.draw(main.x,main.y);
+    movement(main);
     
     
     main.y += main.speed;
     
     if (main.x >= 400){
         currentScene = 3;
+       
     }
     
     /*for (var i = 0; i < enemies.length; i++) {
@@ -435,25 +436,21 @@ function game1(){
 }//first game scene
 
 if(currentScene === 3){
-    buildings[0] = new building(-4,188,83,215);
-    buildings[1] = new building(325,222,86,183);
-    //platforms
-    buildings[2] = new building(100,147,58,11);
-    buildings[3] = new building(192,183,47,11);
-    buildings[4] = new building(275,222,15,15);
-    buildings[5] = new building(294,183,15,15);
-    buildings[6] = new building(78,388,245,11);
+    main.x = 40;
+    main.y = 141;
 }
+
+var main2 = new Char(40,141);
+
 function game2(){
-    var scene = 2;
     
-    
+    stroke(0, 0, 0);
     
     background(77, 88, 186);
     //
      for(var i = 0; i < buildings.length; i++){
         buildings[i].draw();
-        buildings[i].checkCharacterPosition();
+        buildings[i].checkCharacterPosition(main2);
     }
     
     //
@@ -474,9 +471,9 @@ function game2(){
     
     ellipse(360,52,40,41);
     
-    main.draw(20,200);
-    main.y += main.speed;
-    movement();
+    main2.draw(main2.x,main2.y);
+    main2.y += main2.speed;
+    movement(main2);
 }
 
 
@@ -493,6 +490,18 @@ draw = function() {
         game1();
     }
     else if(currentScene === 3){
+        buildings[0] = new building(-4,188,83,215);
+        buildings[1] = new building(325,222,86,183);
+        //platforms
+        buildings[2] = new building(100,147,58,11);
+        buildings[3] = new building(192,183,47,11);
+        buildings[4] = new building(275,222,15,15);
+        buildings[5] = new building(294,183,15,15);
+        buildings[6] = new building(78,388,245,11);
+        
         game2();
     }
+    println(main.x);
+    println(main.y);
 };
+

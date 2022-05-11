@@ -1,13 +1,11 @@
-
-var currentScene = 2;
-var health = 15;
-var start = null;
+var currentScene = 0;
+var points = 0;
 var m = createFont("monospace");
 var drawBitmoji = function(bitmojiX,bitmojiY,w) {
     noStroke();
     var Size = w;
     var bitmojiW = (Size/100);
-    
+
     fill(94, 53, 33);
     rect(bitmojiX-bitmojiW*23,bitmojiY+bitmojiW*17,bitmojiW*45,bitmojiW*52);
     rect(bitmojiX-bitmojiW*28,bitmojiY+bitmojiW*36.4,bitmojiW*55,bitmojiW*33,9);
@@ -22,7 +20,7 @@ var drawBitmoji = function(bitmojiX,bitmojiY,w) {
     fill(0, 0, 0);
     ellipse(bitmojiX+bitmojiW*-8,bitmojiY+bitmojiW*5,bitmojiW*4,bitmojiW*5); //left eye ball
     ellipse(bitmojiX+bitmojiW*10,bitmojiY+bitmojiW*5,bitmojiW*4,bitmojiW*5); //right eye ball
-    
+
     quad(bitmojiX+bitmojiW*-32,bitmojiY+bitmojiW*2,bitmojiX+bitmojiW*-17,bitmojiY+bitmojiW*-24,bitmojiX+bitmojiW*13,bitmojiY+bitmojiW*-26,bitmojiX+bitmojiW*-11,bitmojiY+bitmojiW*-5);//Left Hair Piece
     quad(bitmojiX+bitmojiW*32,bitmojiY+bitmojiW*2,bitmojiX+bitmojiW*17,bitmojiY+bitmojiW*-24,bitmojiX+bitmojiW*-13,bitmojiY+bitmojiW*-26,bitmojiX+bitmojiW*12,bitmojiY+bitmojiW*-5);//Right Hair Piece
     arc(bitmojiX+bitmojiW*0,bitmojiY+bitmojiW*-21, bitmojiW*36, bitmojiW*22,-180,0);
@@ -86,42 +84,42 @@ var drawCharacter = function(x,y,h){
     noStroke();
     fill(255, 171, 241);
     ellipse(x,y+(h/100*3),h/100*90,h/100*90); //head
-    
+
     ellipse(x-(h/100*40),y+(h/100*58),h/100*-20,h/100*18);
     ellipse(x+(h/100*40),y+(h/100*58),h/100*-20,h/100*18);//arms
-    
+
     fill(0, 0, 0);
     ellipse(x-(h/100*16),y,(h/100)*22,(h/100)*51); //eyes
     ellipse(x+(h/100*16),y,(h/100)*22,(h/100)*51);//eyes
-    
+
     fill(100, 204, 222);
     quad(x,y+(h/100*48),x,y+(h/100*90),x-(h/100*31),y+(h/100*90),x-(h/100*23),y+(h/100*44));
     quad(x,y+(h/100*48),x,y+(h/100*90),x+(h/100*31),y+(h/100*90),x+(h/100*23),y+(h/100*44));//body
-    
+
 }; //main character function
 var drawEnemy = function(x,y,h){
     noStroke();
     fill(168, 22, 22);
     quad(x+(h/100*21),y+(h/100*80),x,y+(h/100*132),x+(h/100*54),y+(h/100*132),x+(h/100*29),y+(h/100*80));//body
-    
+
     fill(240, 88, 0);
     ellipse(x+(h/100*26),y+(h/100*50),h/100*87,h/100*68);//head
     //quad(x+(h/100*52),y+(h/100*83),x+(h/100*69),y-(h/100*-58),x-(h/100*14),y-(h/100*-62),x+(h/100*0),y-(h/100*-82));//jaw
-    
+
     fill(0, 0, 0);
     ellipse(x-(h/100*-42),y-(h/100*-49),(h/100)*24,(h/100)*18);
     ellipse(x+(h/100*12),y+(h/100*49),(h/100)*24,(h/100)*19);//eyes
-    
+
     stroke(0, 0, 0);
     line(x+(h/100*53),y-(h/100*-37),x+(h/100*30),y-(h/100*-41));
     line(x-(h/100*0),y+(h/100*37),x-(h/100*-24),y+(h/100*41));//eyebrows
-    
+
     noStroke();
     fill(240, 88, 0);
     ellipse(x-(h/100*-3),y+(h/100*99),h/100*-16,h/100*13);
     ellipse(x+(h/100*49),y+(h/100*99),h/100*-16,h/100*13);//arms
 }; //enemy function
-
+var start = null;
 
 var Button = function(config) {
     this.x = config.x || 0;
@@ -131,9 +129,9 @@ var Button = function(config) {
     this.label = config.label || "Click";
     this.onClick = config.onClick || function() {};
     this.color = config.color;
-   
+
 };
- 
+
 Button.prototype.draw = function() {
     fill(this.color);
     rect(this.x, this.y, this.width, this.height, 5);
@@ -173,8 +171,11 @@ var goBtn = new Button({
     label: "  Let's Go!",
     onClick: function() {
             currentScene = 2;
+            start = round(frameCount/60);
     }
 });// instruction scene button
+
+
 
 var Fruit = function(x,y){
     this.x = x;
@@ -191,11 +192,13 @@ for (var i = 0; i < 10; i++) {
     fruits.push(new Fruit(i * 127 - 17700 , random(20, 260))); 
 }
 
+
+
 var Char = function(x, y) {
     this.x = x;
     this.y = y;
     this.speed = 5;
-}; //make Char objects from this class, expandable
+}; //make Char mainects from this class, expandable
 
 Char.prototype.draw = function() {
     this.y = constrain(this.y, 0, height-50);
@@ -207,33 +210,23 @@ Char.prototype.hop = function() {
 };
 
 Char.prototype.fall = function() {
-    this.y += 5;
-    var temp = round(frameCount/60)-start; 
+    this.y += this.speed;
+    var temp = round(frameCount/60)-start;
 };
 
 Char.prototype.run = function(){
-    this.x += this.speed * 2.5;
+    this.x += this.speed * 2/5;
 };
 
 Char.prototype.back = function(){
-    this.x -= this.speed * 2.5;
+    this.x -= this.speed * 2/5;
 };
 
 Char.prototype.checkForFruit = function(fruit) {
     if ((fruit.x >= this.x && fruit.x <= (this.x + 40)) &&
         (fruit.y >= this.y && fruit.y <= (this.y + 40))) {
         fruit.y = -100;
-        health += 5;
-    }
-};
-
-
-
-Char.prototype.checkForEnemyAttack = function(enemy) {
-    if ((enemy.x >= this.x && enemy.x <= (this.x + 40)) &&
-        (enemy.y >= this.y && enemy.y <= (this.y + 40))) {
-        enemy.y = -100;
-        health -= 10;
+        points += 5;
     }
 };
 
@@ -243,24 +236,59 @@ var Enemy = function(x, y) {
 };
 
 Enemy.prototype.draw = function() {
-    this.y = constrain(this.y, -100, height-50);
+    this.y = constrain(this.y, 0, height-50);
     drawEnemy( this.x, this.y,40);
 };
-
-var main = new Char(40,141);
-
-var fruits = [];
-
-for (var j = 0; j < 2; j++) {  
-    fruits.push(new Fruit(random(60,300), 91)); 
-}
 
 var enemies = [];
 
 for (var i = 0; i < 50; i++) {  
-    enemies.push(new Enemy(i * 132 - (-202) , 162)); 
+    enemies.push(new Enemy(i * 127 - 17700 , random(20, 260))); 
 }//fix later
 
+Char.prototype.checkForEnemyAttack = function(enemy) {
+    if ((enemy.x >= this.x && enemy.x <= (this.x + 40)) &&
+        (enemy.y >= this.y && enemy.y <= (this.y + 40))) {
+        enemy.y = -100;
+        points -= 10;
+    }
+};
+
+var main = new Char(40,141);
+
+
+mouseClicked = function() {
+    if(currentScene === 0){
+         startBtn.handleMouseClick();
+    }
+    else{
+        goBtn.handleMouseClick();
+    }
+
+};
+
+
+var splash = function(){
+    background(154, 228, 252);
+    fill(0, 0, 0);
+    textFont(m,43);
+    text("Alien Platformer", 15,103);
+    textSize(19);
+    text("",122,166);
+    startBtn.draw();   
+    drawBitmoji(331,349,75);
+    drawMoji(54,355,50);
+};//first scene that leads to game
+
+var intro = function(){
+    background(92, 163, 255);
+    fill(0, 0, 0);
+    textSize(36);
+    text("Story",152,8);
+    text("Controls",123,222);
+    goBtn.draw();
+
+};//instruction and story; needs more text
 
 var building = function(x,y, width, height){
     //Building to the left
@@ -268,7 +296,7 @@ var building = function(x,y, width, height){
     this.y = y;
     this.w = width;
     this.h = height;
-    
+
 };
 
 building.prototype.draw = function(){
@@ -286,149 +314,104 @@ var building1 = new building(0,179,94,220);
 
 
 
-var boss1 = new Enemy(135,203);//bosses for end scene
-var boss2 = new Enemy(287,149);
 
 
-mouseClicked = function() {
-    if(currentScene === 0){
-         startBtn.handleMouseClick();
-    }
-    else{
-        goBtn.handleMouseClick();
-    }
-    
-};
-
-
-var splash = function(){
-    background(154, 228, 252);
-    fill(0, 0, 0);
-    textFont(m,43);
-    text("Loco Lost", 91,65);
-    text("His Keys!", 98,123);
-    textSize(19);
-    text("",122,166);
-    startBtn.draw();   
-    drawBitmoji(331,349,75);
-    drawMoji(54,355,50);
-};//first scene that leads to game
-
-var intro = function(){
-    background(92, 163, 255);
-    fill(0, 0, 0);
-    textSize(36);
-    text("Story",152,8);
-    text("Controls",123,220);
-    textSize(18);
-    text("Loco, the alien, is trying to find his",10,58);
-    text("house key, but his neighbors keep",25,91);
-    text("trying to kill him! You have to help!",10,124);
-    text("If those lousy neighbors hit him,",35,157);
-    text("Eat some fruit to heal!",90,190);
-    text("To jump: press the Up Arrow",70,262);
-    text("To move forward: press the Right Arrow",10,294);
-    goBtn.draw();
-    
-};//instruction and story; needs more text
 
 var game1 = function(){
-    stroke(0, 0, 0);
-    background(115, 129, 255);
 
-    fill(166, 166, 166);
-    building1.draw();//first building
+stroke(0, 0, 0);
+    background(102, 116, 247);
+
+    building1.draw();
+    //Sidewalk
     rect(95,389,103,10);
-    rect(200,217,58,220);
-    rect(325,217,98,290);
     rect(259,389,65,10);
-    
-    
+    // 
+    //Middle Building
+    rect(200,217,58,220);
 
+    //Building to the Right
+    rect(324,217,98,290);
+   //
+    //Windows to the left
     fill(247, 214, 30);
-    rect(10,212,20,20);
-    rect(60,212,20,20);
-    rect(10,252,20,20);
-    rect(60,252,20,20);
-    rect(10,212,20,20);
-    rect(10,291,20,20); 
-    rect(60,291,20,20);
-    rect(218,240,20,20);
+    rect(58,212,20,20);
+    rect(11,252,20,20);
+    rect(61,252,20,20);
+    rect(11,212,20,20);
+    rect(11,291,20,20); 
+    rect(61,291,20,20);
+    //
+
+    //Middle Windows
+    rect(219,240,20,20);
     rect(218,281,20,20);
     rect(218,323,20,20);
+    //
+    //Windows to the right
     rect(340,234,20,20);
     rect(340,275,20,20);
     rect(340,320,20,20);
 
-    ellipse(110,17,10,10);
+
+    //Stars
+    ellipse(107,17,10,10);
     ellipse(77,54,10,10);
     ellipse(213,17,10,10);
     ellipse(179,85,10,10);
     ellipse(29,17,10,10);
     ellipse(253,65,10,10);
     ellipse(326,13,10,10);
+    //
+
+    //Moon
     fill(210, 222, 98);
     ellipse(360,52,40,41);
-    
+
     main.draw(20,200);
-    
-    
-    for (var i = 0; i < enemies.length; i++) {
-        
-        enemies[i].draw();
-        //check the robot if main hit enemy
-        main.checkForEnemyAttack(enemies[i]);
-        //enemies[i].x += 1; //moves enemies left to right
-    }
-    
-    for (var j = 0; j < fruits.length; j++) {
-        fruits[j].draw();
-        //check the robot if main hit enemy
-        main.checkForFruit(fruits[j]);
-    }
-    
+    main.y += main.speed;
      if (keyIsPressed && keyCode === UP) {
+         if(keyReleased){
         main.hop();
-    } else { 
-       main.fall();
-    } //if space bar is pressed char jumps, else it continuosly falls
-        
-        
+         }
+        //println("It works");
+    }// if space bar is pressed char jumps, else it continuosly falls
+       //main.y += main.speed;
+       //println(main.x);
     if (keyIsPressed && keyCode === RIGHT) {
         main.run();
+        //println("It works");
     }
     if (keyIsPressed && keyCode === LEFT) {
         main.back();
+        //println("It works");
     }
-    
-    
-    if (main.y >= 300){
-        fill(97, 0, 0);
-        textSize(60);
-        text("Loco died!",70,120);
-    }//when character falls to ground
-    
+
+
+
+
     if (main.x >= 400){
         //currentScene = 2;
         main.x = 0;
-        currentScene = 3;
-        //starts next scene
     }
-    
-    if (main.x <= 0){
-        main.x = 0;
-    }//cant leave off left side of screen
-    
-    fill(255, 255, 255);
-    textSize(20);
-    text("Health:" + health,10,20);
-    
+
+    /*for (var i = 0; i < enemies.length; i++) {
+
+        enemies[i].draw();
+        //check the robot if Gio hits robot
+        Char.checkForEnemyAttack(enemies[i]);
+        //robots[i].x += speed; //moves robots left to right
+
+        for (var j = 50; j > enemies.length; j++){
+      enemies[j].x += random(1,2);
+    }
+    }*/
 };//first game scene
 
 var game2 = function(){
-    //scene 3
-    background(76, 95, 219);
-    stroke(0, 0, 0);
+    var scene = 2;
+    background(77, 88, 186);
+    //
     fill(166, 166, 166);
     rect(-4,188,83,215);
     rect(192,183,47,11);
@@ -452,158 +435,11 @@ var game2 = function(){
     rect(222,185,10,8);
     //
     fill(222, 179, 100);
-    
+
     ellipse(360,52,40,41);
-    
-    main.draw(20,200);
-    
-    
-    for (var i = 0; i < enemies.length; i++) {
-        
-        enemies[i].draw();
-        //check the robot if main hit enemy
-        main.checkForEnemyAttack(enemies[i]);
-        //enemies[i].x += 1; //moves enemies left to right
-    }
-    
-    for (var j = 0; j < fruits.length; j++) {
-        fruits[j].draw();
-        //check the robot if main hit enemy
-        main.checkForFruit(fruits[j]);
-    }
-    
-     if (keyIsPressed && keyCode === UP) {
-        main.hop();
-    } else { //(152 < main.y){
-       main.fall();
-    } //if space bar is pressed char jumps, else it continuosly falls
-        
-        
-    if (keyIsPressed && keyCode === RIGHT) {
-        main.run();
-    }
-    if (keyIsPressed && keyCode === LEFT) {
-        main.back();
-    }
-    
-    
-    if (main.y >= 300){
-        fill(97, 0, 0);
-        textSize(60);
-        text("Loco died!",70,120);
-    }//when character falls to ground
-    
-    if (main.x >= 400){
-        //currentScene = 2;
-        main.x = 0;
-        currentScene = 4;
-        //starts next scene
-    }
-    
-    if (main.x <= 0){
-        main.x = 0;
-    }//cant leave off left side of screen
-    
-    fill(255, 255, 255);
-    textSize(20);
-    text("Health:" + health,10,20);
 };
 
 
-var lastScene = function(){
-    stroke(0, 0, 0);
-    background(0, 9, 51);
-    
-    fill(166, 166, 166);
-    rect(0,179,94,236);
-    rect(95,388,259,17);
-    rect(200,222,33,92);
-    rect(355,151,76,252);
-    
-    rect(125,258,43,40);
-    rect(277,203,43,40);
-
-    fill(247, 214, 30);
-    rect(60,212,20,20);
-    rect(10,252,20,20);
-    rect(60,252,20,20);
-    rect(10,212,20,20);
-    rect(10,291,20,20); 
-    rect(60,291,20,20);
-    rect(206,240,20,20);
-    rect(206,281,20,20);
-    
-    rect(372,291,20,20);
-    rect(372,252,20,20);
-    rect(372,212,20,20);
-    rect(372,172,20,20);
-    
-    noStroke();
-    ellipse(110,17,10,10);
-    ellipse(77,54,10,10);
-    ellipse(213,17,10,10);
-    ellipse(179,85,10,10);
-    ellipse(29,17,10,10);
-    ellipse(253,65,10,10);
-    ellipse(326,13,10,10);
-    fill(210, 222, 98);
-    ellipse(360,52,40,41);
-    
-    main.draw(20,200);
-    boss1.draw(20,200);
-    boss2.draw(20,200);
-    
-    for (var j = 0; j < 1; j++) {
-        fruits[j].draw();
-        //check the robot if main hit enemy
-        main.checkForFruit(fruits[j]);
-    }
-    
-    if (keyIsPressed && keyCode === UP) {
-        main.hop();
-    } else {
-       main.fall();
-    } //if space bar is pressed char jumps, else it continuosly falls
-        
-        
-    if (keyIsPressed && keyCode === RIGHT) {
-        main.run();
-    }
-   
-    if (keyIsPressed && keyCode === LEFT) {
-        main.back();
-    }
-     
-    if (main.x <= 0){
-        main.x = 0;
-    }
-    
-    if (main.x >= 400){
-        main.x = 0;
-    }
-    
-    var key = image(getImage("cute/Key"),355,96,50,60);
-        
-    if(main.x >= 355 && main.y >= 96){
-        fill(255, 255, 255);
-        textSize(65);
-        text("You Won!",77,216);
-    }
-    
-    if(main.x >= boss1.x && main.y >= boss1.y || main.x >= boss2.x && main.y >= boss2.y){
-        fill(110, 42, 42);
-        textSize(65);
-        health -= 10; 
-        text("You Lose!",66,161);
-        //currentScene = 0; // or new page that says you lose start again?
-    }
-    
-     if (main.y >= 300){
-        fill(110, 42, 42);
-        textSize(65);
-        text("You Lose!",66,161);
-    }//when character falls to ground
-};
 
 
 draw = function() {
@@ -616,17 +452,5 @@ draw = function() {
     else if(currentScene === 2){
         game1();
     }
-    else if(currentScene === 3){
-        game2();
-    }
-    /*
-    else if(currentScene === 4){
-        game3();
-    }
-    */
-    else if(currentScene === 4){
-        lastScene();
-    }
 };
-
 

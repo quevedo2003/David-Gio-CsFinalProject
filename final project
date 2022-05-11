@@ -609,7 +609,7 @@ var lastScene = function(){
     boss1.draw(20,200);
     boss2.draw(20,200);
     
-    if (keyIsPressed && key.code === 32) {
+    if (keyIsPressed && keyCode === UP) {
         main.hop();
     } else { //(152 < main.y){
        main.fall();
